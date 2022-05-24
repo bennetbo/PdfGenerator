@@ -1,6 +1,6 @@
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using QuestPDF.Previewer;
 
 static IDocument CreateDocument(PdfGenerationData data)
 {
@@ -10,18 +10,17 @@ static IDocument CreateDocument(PdfGenerationData data)
     {
       p.Margin(50);
       p.Size(data.Width, data.Height, Unit.Point);
+      p.DefaultTextStyle(t => t.FontSize(30));
 
-      p.Content()
-       .DefaultTextStyle(t => t.FontSize(30))
-       .Column(c =>
-       {
-         foreach (var i in Enumerable.Range(0, data.PageCount))
-         {
-           c.Item().Text("Hallo :)");
-           if (i < data.PageCount - 1)
-             c.Item().PageBreak();
-         }
-       });
+      p.Content().Column(c =>
+      {
+        foreach (var i in Enumerable.Range(0, data.PageCount))
+        {
+          c.Item().Text(Placeholders.Sentence());
+          if (i < data.PageCount - 1)
+            c.Item().PageBreak();
+        }
+      });
       p.Footer().AlignCenter().Text(t =>
       {
         t.CurrentPageNumber();
