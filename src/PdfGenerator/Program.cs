@@ -1,40 +1,9 @@
+using PdfGenerator.Services;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Diagnostics.CodeAnalysis;
-
-static IDocument CreateDocument(PdfGenerationData data)
-{
-  return Document.Create(c =>
-  {
-    c.Page(p =>
-    {
-      p.Margin(50);
-      p.Size(data.Width, data.Height, Unit.Point);
-      p.DefaultTextStyle(t => t.FontSize(30));
-
-      p.Content().Column(c =>
-      {
-        foreach (var i in Enumerable.Range(0, data.PageCount))
-        {
-          c.Item().Text(Placeholders.Sentence());
-          if (i < data.PageCount - 1)
-            c.Item().PageBreak();
-        }
-      });
-      p.Footer().AlignCenter().Text(t =>
-      {
-        t.CurrentPageNumber();
-        t.Span(" / ");
-        t.TotalPages();
-      });
-    });
-  }).WithMetadata(new DocumentMetadata()
-  {
-    DocumentLayoutExceptionThreshold = 2500,
-  });
-}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IDocumentGeneratorService, DocumentGeneratorService>();
 
 var app = builder.Build();
 
@@ -63,19 +33,19 @@ app.MapGet("/listPageSizes", () =>
 });
 
 
-app.MapGet("/generate/{pagesize}/{pages}", (string pageSize, int pages) =>
+app.MapGet("/generate/{pagesize}/{pages}", (string pagesize, int pages, IDocumentGeneratorService documentGeneratorService) =>
 {
-  if (!pdfSizes.TryMatchSize(pageSize, out var size))
+  if (!pdfSizes.TryMatchSize(pagesize, out var size))
     return Results.BadRequest();
 
-  var document = CreateDocument(new(size.Width, size.Height, pages));
+  var document = documentGeneratorService.CreateDocument(new(size.Width, size.Height, pages));
   var pdfData = document.GeneratePdf();
   return Results.Bytes(pdfData, contentType: "application/pdf");
 });
 
-app.MapGet("/generate/{width}/{height}/{pages}", (int width, int height, int pages) =>
+app.MapGet("/generate/{width}/{height}/{pages}", (int width, int height, int pages, IDocumentGeneratorService documentGeneratorService) =>
 {
-  var document = CreateDocument(new(width, height, pages));
+  var document = documentGeneratorService.CreateDocument(new(width, height, pages));
   var pdfData = document.GeneratePdf();
   return Results.Bytes(pdfData, contentType: "application/pdf");
 });
