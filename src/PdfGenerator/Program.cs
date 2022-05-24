@@ -1,6 +1,8 @@
+using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 
 static IDocument CreateDocument(PdfGenerationData data)
 {
@@ -28,6 +30,9 @@ static IDocument CreateDocument(PdfGenerationData data)
         t.TotalPages();
       });
     });
+  }).WithMetadata(new DocumentMetadata()
+  {
+    DocumentLayoutExceptionThreshold = 2500,
   });
 }
 
@@ -49,6 +54,25 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+var pdfSizes = new PdfSizes();
+
+app.MapGet("/listPageSizes", () =>
+{
+  var content = string.Join(Environment.NewLine, pdfSizes.AvailableSizes);
+  return Results.Text(content);
+});
+
+
+app.MapGet("/generate/{pagesize}/{pages}", (string pageSize, int pages) =>
+{
+  if (!pdfSizes.TryMatchSize(pageSize, out var size))
+    return Results.BadRequest();
+
+  var document = CreateDocument(new(size.Width, size.Height, pages));
+  var pdfData = document.GeneratePdf();
+  return Results.Bytes(pdfData, contentType: "application/pdf");
+});
+
 app.MapGet("/generate/{width}/{height}/{pages}", (int width, int height, int pages) =>
 {
   var document = CreateDocument(new(width, height, pages));
@@ -58,4 +82,26 @@ app.MapGet("/generate/{width}/{height}/{pages}", (int width, int height, int pag
 
 app.Run();
 
-public record PdfGenerationData(int Width, int Height, int PageCount);
+public record PdfGenerationData(float Width, float Height, int PageCount);
+
+public sealed class PdfSizes
+{
+  private readonly Dictionary<string, PageSize> _pageSizes;
+
+  public IEnumerable<string> AvailableSizes => _pageSizes.Keys;
+
+  public PdfSizes()
+  {
+    _pageSizes = new();
+    var props = typeof(PageSizes)
+      .GetProperties()
+      .Select(c => (Name: c.Name.ToLower(), Size: c.GetValue(null) as PageSize))
+      .Where(c => c.Size != null);
+
+    foreach (var prop in props)
+      _pageSizes[prop.Name] = prop.Size!;
+  }
+
+  public bool TryMatchSize(string requestSize, [NotNullWhen(true)] out PageSize? pageSize)
+    => _pageSizes.TryGetValue(requestSize.ToLower(), out pageSize);
+}
