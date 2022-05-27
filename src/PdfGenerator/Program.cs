@@ -1,17 +1,13 @@
 using PdfGenerator.Services;
-using QuestPDF.Drawing;
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
-using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IDocumentGeneratorService, DocumentGeneratorService>();
+builder.Services.AddEndpointsApiExplorer()
+  .AddSwaggerGen()
+  .AddSingleton<IGeneratorService, GeneratorService>()
+  .AddSingleton<IMeasurementService, MeasurementService>();
 
 var app = builder.Build();
 
@@ -24,54 +20,38 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var pdfSizes = new PdfSizes();
+app.MapGet("/listPageSizes", (IMeasurementService measurement) => Results.Json(measurement.AvailableSizes));
 
-app.MapGet("/listPageSizes", () =>
+app.MapGet("/generate/{pagesize}/{pages:int}", (string pagesize, int pages, IGeneratorService documentGeneratorService, IMeasurementService measurement) =>
 {
-  var content = string.Join(Environment.NewLine, pdfSizes.AvailableSizes);
-  return Results.Text(content);
-});
-
-
-app.MapGet("/generate/{pagesize}/{pages}", (string pagesize, int pages, IDocumentGeneratorService documentGeneratorService) =>
-{
-  if (!pdfSizes.TryMatchSize(pagesize, out var size))
+  if (!measurement.TryMatchSize(pagesize, out var size) || size == null)
     return Results.BadRequest();
 
-  var document = documentGeneratorService.CreateDocument(new(size.Width, size.Height, pages));
-  var pdfData = document.GeneratePdf();
-  return Results.Bytes(pdfData, contentType: "application/pdf");
+  var document = documentGeneratorService.Generate(new(size.Width, size.Height, pages));
+  if (document == null)
+    return Results.StatusCode(500);
+
+  return Results.Bytes(
+    contents: document,
+    contentType: "application/pdf",
+    fileDownloadName: $"test_pdf_w{size.Width}_h{size.Height}_p{pages}.pdf"
+  );
 });
 
-app.MapGet("/generate/{width}/{height}/{pages}", (int width, int height, int pages, IDocumentGeneratorService documentGeneratorService) =>
+app.MapGet("/generate/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IGeneratorService documentGeneratorService, IMeasurementService measurement) =>
 {
-  var document = documentGeneratorService.CreateDocument(new(width, height, pages));
-  var pdfData = document.GeneratePdf();
-  return Results.Bytes(pdfData, contentType: "application/pdf");
+  if (!measurement.TryCreateValidSize(width, height, out var size))
+    return Results.BadRequest();
+
+  var document = documentGeneratorService.Generate(new(width, height, pages));
+  if (document == null)
+    return Results.StatusCode(500);
+
+  return Results.Bytes(
+    contents: document,
+    contentType: "application/pdf",
+    fileDownloadName: $"test_pdf_w{size.Width}_h{size.Height}_p{pages}.pdf"
+  );
 });
 
 app.Run();
-
-public record PdfGenerationData(float Width, float Height, int PageCount);
-
-public sealed class PdfSizes
-{
-  private readonly Dictionary<string, PageSize> _pageSizes;
-
-  public IEnumerable<string> AvailableSizes => _pageSizes.Keys;
-
-  public PdfSizes()
-  {
-    _pageSizes = new();
-    var props = typeof(PageSizes)
-      .GetProperties()
-      .Select(c => (Name: c.Name.ToLower(), Size: c.GetValue(null) as PageSize))
-      .Where(c => c.Size != null);
-
-    foreach (var prop in props)
-      _pageSizes[prop.Name] = prop.Size!;
-  }
-
-  public bool TryMatchSize(string requestSize, [NotNullWhen(true)] out PageSize? pageSize)
-    => _pageSizes.TryGetValue(requestSize.ToLower(), out pageSize);
-}

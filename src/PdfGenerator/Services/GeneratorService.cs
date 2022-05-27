@@ -1,17 +1,18 @@
-﻿using QuestPDF.Drawing;
+﻿using PdfGenerator.DTOs;
+using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace PdfGenerator.Services;
-public interface IDocumentGeneratorService
+public interface IGeneratorService
 {
-  IDocument CreateDocument(PdfGenerationData data);
+  byte[] Generate(GenerationDTO data);
 }
 
-public class DocumentGeneratorService : IDocumentGeneratorService
+public class GeneratorService : IGeneratorService
 {
-  public IDocument CreateDocument(PdfGenerationData data)
+  public byte[] Generate(GenerationDTO data)
   {
     return Document.Create(c =>
     {
@@ -40,7 +41,7 @@ public class DocumentGeneratorService : IDocumentGeneratorService
     }).WithMetadata(new DocumentMetadata()
     {
       DocumentLayoutExceptionThreshold = 2500,
-    });
+    }).GeneratePdf();
   }
 }
 
