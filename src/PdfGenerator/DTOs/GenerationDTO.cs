@@ -1,2 +1,16 @@
 ﻿namespace PdfGenerator.DTOs;
-public record GenerationDTO(float Width, float Height, int PageCount);
+
+public interface IHasPageCount
+{
+  int PageCount { get; }
+}
+public record ExplicitGenerationParams(int PageCount, int? Width, int? Height) : IHasPageCount;
+public record PageSizeGenerationParams(int PageCount, string? PageSize) : IHasPageCount;
+
+public enum PdfContent
+{
+  Empty,
+  RandomSentences,
+  CatImages,
+  Images
+}

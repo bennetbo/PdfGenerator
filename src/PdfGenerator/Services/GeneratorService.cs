@@ -1,33 +1,49 @@
 ﻿using PdfGenerator.DTOs;
+using PdfGenerator.Models;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
-using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace PdfGenerator.Services;
 public interface IGeneratorService
 {
-  byte[] Generate(GenerationDTO data);
+  byte[] Generate(float width, float height, int pageCount, PdfContent content = PdfContent.RandomSentences);
 }
 
 public class GeneratorService : IGeneratorService
 {
-  public byte[] Generate(GenerationDTO data)
+  public GeneratorService(IPageContentService pageContentService)
+  {
+    PageContentService = pageContentService;
+  }
+
+  public IPageContentService PageContentService { get; }
+
+  public byte[] Generate(float width, float height, int pageCount, PdfContent content = PdfContent.RandomSentences)
   {
     return Document.Create(c =>
     {
       c.Page(p =>
       {
         p.Margin(50);
-        p.Size(data.Width, data.Height, Unit.Point);
-        p.DefaultTextStyle(t => t.FontSize(30));
+        p.Size(width, height, Unit.Point);
+        p.DefaultTextStyle(t => t.FontSize(18));
 
         p.Content().Column(c =>
         {
-          foreach (var i in Enumerable.Range(0, data.PageCount))
+          foreach (var pageIndex in Enumerable.Range(0, pageCount))
           {
-            c.Item().Text(Placeholders.Sentence());
-            if (i < data.PageCount - 1)
+            IContentCreationStrategy contentCreationStrategy = content switch
+            {
+              PdfContent.RandomSentences => PageContentService.CreateRandomTextContentStrategy(),
+              PdfContent.Empty => PageContentService.CreateEmtpyContentStrategy(),
+              PdfContent.Images => PageContentService.CreateImageContentStrategy((int)width, (int)height),
+              PdfContent.CatImages => PageContentService.CreateCatImageContentStrategy(),
+              _ => throw new NotImplementedException(),
+            };
+            contentCreationStrategy.Use(c.Item());
+
+            if (pageIndex < pageCount - 1)
               c.Item().PageBreak();
           }
         });
