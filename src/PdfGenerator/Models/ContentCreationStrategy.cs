@@ -9,7 +9,6 @@ public interface IPageContentParams
   PdfContent PdfContent { get; }
   IContentCreationStrategy ContentCreationStrategy { get; }
   IContentCreationStrategy FooterCreationStrategy { get; }
-
 }
 
 public interface IContentCreationStrategy
