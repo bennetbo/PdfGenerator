@@ -1,5 +1,6 @@
 using FluentValidation;
 using PdfGenerator.DTOs;
+using PdfGenerator.Models;
 using PdfGenerator.Services;
 using PdfGenerator.Validators;
 
@@ -9,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer()
   .AddSwaggerGen()
-  .AddSingleton<IPageContentService, PageContentService>()
+  .AddSingleton<IPdfContentService<PdfPageContent>, PageContentService>()
+  .AddSingleton<IPdfContentService<PdfFooterContent>, FooterContentService>()
   .AddSingleton<IGeneratorService, GeneratorService>()
   .AddSingleton<IMeasurementService, MeasurementService>()
   .AddSingleton<IHttpHandlerService, HttpHandlerService>()
@@ -38,27 +40,27 @@ app.MapGet("/generate/{width:int}/{height:int}/{pages:int}", (int width, int hei
   .WithName("GenerateByExplicitSize").ProducesValidationProblem().Produces(200);
 
 app.MapGet("/generate/imaged/{pagesize}/{pages:int}", (string pagesize, int pages, IHttpHandlerService handlerService, IValidator<PageSizeGenerationParams> validator)
-  => handlerService.GetResult(new(pages, pagesize), validator, PdfContent.Images))
+  => handlerService.GetResult(new(pages, pagesize), validator, PdfPageContent.Images))
   .WithName("GenerateImagedByPagesize").ProducesValidationProblem().Produces(200);
 
 app.MapGet("/generate/imaged/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IHttpHandlerService handlerService, IValidator<ExplicitGenerationParams> validator)
-  => handlerService.GetResult(new(pages, width, height), validator, PdfContent.Images))
+  => handlerService.GetResult(new(pages, width, height), validator, PdfPageContent.Images))
   .WithName("GenerateImagedByExplicitSize").ProducesValidationProblem().Produces(200); ;
 
 app.MapGet("/generate/imaged/cats/{pagesize}/{pages:int}", (string pagesize, int pages, IHttpHandlerService handlerService, IValidator<PageSizeGenerationParams> validator)
-  => handlerService.GetResult(new(pages, pagesize), validator, PdfContent.CatImages))
+  => handlerService.GetResult(new(pages, pagesize), validator, PdfPageContent.CatImages))
   .WithName("GenerateCatImagedByPagesize").ProducesValidationProblem().Produces(200);
 
 app.MapGet("/generate/imaged/cats/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IHttpHandlerService handlerService, IValidator<ExplicitGenerationParams> validator)
-  => handlerService.GetResult(new(pages, width, height), validator, PdfContent.CatImages))
+  => handlerService.GetResult(new(pages, width, height), validator, PdfPageContent.CatImages))
   .WithName("GenerateCatImagedByExplicitSize").ProducesValidationProblem().Produces(200); ;
 
 app.MapGet("/generate/empty/{pagesize}/{pages:int}", (string pagesize, int pages, IHttpHandlerService handlerService, IValidator<PageSizeGenerationParams> validator)
-  => handlerService.GetResult(new(pages, pagesize), validator, PdfContent.Empty))
+  => handlerService.GetResult(new(pages, pagesize), validator, PdfPageContent.Empty))
   .WithName("EmptyByPagesize").ProducesValidationProblem().Produces(200);
 
 app.MapGet("/generate/empty/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IHttpHandlerService handlerService, IValidator<ExplicitGenerationParams> validator)
-  => handlerService.GetResult(new(pages, width, height), validator, PdfContent.Empty))
+  => handlerService.GetResult(new(pages, width, height), validator, PdfPageContent.Empty))
   .WithName("EmptyByExplicitSize").ProducesValidationProblem().Produces(200); ;
 
 

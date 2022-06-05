@@ -1,19 +1,11 @@
-﻿using PdfGenerator.Models;
+﻿using PdfGenerator.DTOs;
+using PdfGenerator.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace PdfGenerator.Services;
-public interface IPageContentService
-{
-  IContentCreationStrategy CreateEmtpyContentStrategy();
-  IContentCreationStrategy CreateRandomTextContentStrategy();
-  IContentCreationStrategy CreateCustomTextContentStrategy(int pageIndex, params string[] Contents);
-  IContentCreationStrategy CreateCatImageContentStrategy();
-  IContentCreationStrategy CreateImageContentStrategy(int width, int height);
-}
-
-public class PageContentService : IPageContentService
+public class PageContentService : IPdfContentService<PdfPageContent>
 {
   record EmptyContentCreationStrategy() : IContentCreationStrategy
   {
@@ -43,4 +35,12 @@ public class PageContentService : IPageContentService
   public IContentCreationStrategy CreateImageContentStrategy(int width, int height) => new ImageContentCreationStrategy(width, height);
   public IContentCreationStrategy CreateRandomTextContentStrategy() => new RandomContentCreationStrategy();
 
+  public IContentCreationStrategy GetContentCreationStrategy(PdfPageContent pageContent, int width, int height) => pageContent switch
+  {
+    PdfPageContent.RandomSentences => CreateRandomTextContentStrategy(),
+    PdfPageContent.Empty => CreateEmtpyContentStrategy(),
+    PdfPageContent.Images => CreateImageContentStrategy(width, height),
+    PdfPageContent.CatImages => CreateCatImageContentStrategy(),
+    _ => throw new NotImplementedException(),
+  };
 }
