@@ -25,6 +25,9 @@ csharp_style_prefer_range_operator = true:suggestion
 csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
 csharp_space_around_binary_operators = before_and_after
 
+# IDE0058: Expression value is never used
+csharp_style_unused_value_expression_statement_preference = unused_local_variable
+
 [*.{cs,vb}]
 #### Naming styles ####
 

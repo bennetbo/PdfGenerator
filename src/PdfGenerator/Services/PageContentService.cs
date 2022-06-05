@@ -1,5 +1,4 @@
-﻿using PdfGenerator.DTOs;
-using PdfGenerator.Models;
+﻿using PdfGenerator.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -16,13 +15,13 @@ public interface IPageContentService
 
 public class PageContentService : IPageContentService
 {
-  record EmptyContentCreationStrategy() : IContentCreationStrategy 
-  { 
-    public void Use(IContainer container) { } 
+  record EmptyContentCreationStrategy() : IContentCreationStrategy
+  {
+    public void Use(IContainer container) { }
   }
-  record CustomContentCreationStrategy(string Content) : IContentCreationStrategy 
-  { 
-    public void Use(IContainer container)  => container.Text(Content);
+  record CustomContentCreationStrategy(string Content) : IContentCreationStrategy
+  {
+    public void Use(IContainer container) => container.Text(Content);
   }
   record RandomContentCreationStrategy() : IContentCreationStrategy
   {

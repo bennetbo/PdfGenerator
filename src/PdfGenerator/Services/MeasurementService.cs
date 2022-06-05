@@ -1,5 +1,5 @@
 ﻿using QuestPDF.Helpers;
-using System.Diagnostics.CodeAnalysis;
+using QuestPDF.Infrastructure;
 
 namespace PdfGenerator.Services
 {
@@ -10,8 +10,12 @@ namespace PdfGenerator.Services
     int MinWidth { get; }
     int MinHeight { get; }
     IEnumerable<string> AvailableSizes { get; }
-    bool TryMatchSize(string requestSize, out PageSize? pageSize);
-    bool TryCreateValidSize(int width, int height, out PageSize? pageSize);
+    bool IsValidWidth(int width);
+    bool IsValidHeight(int width);
+    bool IsValidPageSize(string requestSize);
+    bool IsValidSizeParams(int width, int height);
+    PageSize GetValidPageSize(string requestSize, string defaultValue = "a4");
+    PageSize GetPageSizeOrDefault(int width, int height, PageSize? defaultPageSize = null);
   }
 
   class MeasurementService : IMeasurementService
@@ -19,10 +23,10 @@ namespace PdfGenerator.Services
     private readonly Dictionary<string, PageSize> _pageSizes;
 
     public IEnumerable<string> AvailableSizes => _pageSizes.Keys;
-    public int MaxWidth { get; } = 10000;
-    public int MaxHeight { get; } = 10000;
-    public int MinWidth { get; } = 0;
-    public int MinHeight { get; } = 0;
+    public int MaxWidth { get; } = (int)Size.Max.Width;
+    public int MaxHeight { get; } = (int)Size.Max.Height;
+    public int MinWidth { get; } = (int)Size.Zero.Width;
+    public int MinHeight { get; } = (int)Size.Zero.Height;
 
     public MeasurementService()
     {
@@ -36,15 +40,17 @@ namespace PdfGenerator.Services
         _pageSizes[Name] = Size!;
     }
 
-    public bool TryMatchSize(string requestSize, [NotNullWhen(true)] out PageSize? pageSize)
-      => _pageSizes.TryGetValue(requestSize.ToLower(), out pageSize);
+    public bool IsValidPageSize(string? requestSize) => requestSize != null && _pageSizes.ContainsKey(requestSize!.ToLower());
 
-    public bool TryCreateValidSize(int width, int height, [NotNull] out PageSize? pageSize)
+    public bool IsValidWidth(int width) => width <= MaxWidth && width >= MinWidth;
+    public bool IsValidHeight(int height) => height >= MinHeight && height <= MaxHeight;
+    public bool IsValidSizeParams(int width, int height) => IsValidHeight(height) && IsValidWidth(width);
+    public PageSize GetValidPageSize(string requestSize, string defaultValue = "a4")
+      => _pageSizes.ContainsKey(requestSize?.ToLower() ?? string.Empty) ? _pageSizes[requestSize!] : _pageSizes[defaultValue];
+    public PageSize GetPageSizeOrDefault(int width, int height, PageSize? defaultPageSize = null)
     {
-      var valid = width >= MinWidth && height >= MinHeight && width <= MaxWidth && height <= MaxHeight;
-      pageSize = valid ? new PageSize(width, height) : PageSizes.A4;
-      return valid;
+      var valid = IsValidSizeParams(width, height);
+      return valid ? new PageSize(width, height) : defaultPageSize ?? PageSizes.A4;
     }
   }
 }
-
