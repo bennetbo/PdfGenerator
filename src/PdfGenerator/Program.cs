@@ -120,5 +120,36 @@ app.MapGet("/generate/imaged/cats/{width:int}/{height:int}/{pages:int}", (int wi
   );
 });
 
+app.MapGet("/generate/empty/{pagesize}/{pages:int}", (string pagesize, int pages, IGeneratorService documentGeneratorService, IMeasurementService measurement) =>
+{
+  if (!measurement.TryMatchSize(pagesize, out var size) || size == null)
+    return Results.BadRequest();
+
+  var document = documentGeneratorService.Generate(new(size.Width, size.Height, pages), PdfContent.Empty);
+  if (document == null)
+    return Results.StatusCode(500);
+
+  return Results.Bytes(
+    contents: document,
+    contentType: "application/pdf",
+    fileDownloadName: $"test_pdf_w{size.Width}_h{size.Height}_p{pages}.pdf"
+  );
+});
+
+app.MapGet("/generate/empty/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IGeneratorService documentGeneratorService, IMeasurementService measurement) =>
+{
+  if (!measurement.TryCreateValidSize(width, height, out var size))
+    return Results.BadRequest();
+
+  var document = documentGeneratorService.Generate(new(width, height, pages), PdfContent.Empty);
+  if (document == null)
+    return Results.StatusCode(500);
+
+  return Results.Bytes(
+    contents: document,
+    contentType: "application/pdf",
+    fileDownloadName: $"test_pdf_w{size.Width}_h{size.Height}_p{pages}.pdf"
+  );
+});
 
 app.Run();

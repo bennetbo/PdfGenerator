@@ -37,7 +37,7 @@ public class GeneratorService : IGeneratorService
             IContentCreationStrategy contentCreationStrategy = content switch
             {
               PdfContent.RandomSentences => PageContentService.CreateRandomTextContentStrategy(),
-              PdfContent.Empty => PageContentService.CreateRandomTextContentStrategy(),
+              PdfContent.Empty => PageContentService.CreateEmtpyContentStrategy(),
               PdfContent.Images => PageContentService.CreateImageContentStrategy((int)data.Width, (int)data.Height),
               PdfContent.CatImages=> PageContentService.CreateCatImageContentStrategy(),
               _ => throw new NotImplementedException(),
