@@ -10,7 +10,8 @@ public interface IPageContentService
   IContentCreationStrategy CreateEmtpyContentStrategy();
   IContentCreationStrategy CreateRandomTextContentStrategy();
   IContentCreationStrategy CreateCustomTextContentStrategy(int pageIndex, params string[] Contents);
-  IContentCreationStrategy CreateImageContentStrategy();
+  IContentCreationStrategy CreateCatImageContentStrategy();
+  IContentCreationStrategy CreateImageContentStrategy(int width, int height);
 }
 
 public class PageContentService : IPageContentService
@@ -27,18 +28,20 @@ public class PageContentService : IPageContentService
   {
     public void Use(IContainer container) => container.Text(Placeholders.Sentence());
   }
-
-  record ImageContentCreationStrategy() : IContentCreationStrategy
+  record CatImageContentCreationStrategy() : IContentCreationStrategy
   {
     public void Use(IContainer container) => container.Image("./Images/Professor.jpeg");
+  }
+  record ImageContentCreationStrategy(int Width, int Height) : IContentCreationStrategy
+  {
+    public void Use(IContainer container) => container.Image(Placeholders.Image(Width, Height));
   }
 
 
   public IContentCreationStrategy CreateEmtpyContentStrategy() => new EmptyContentCreationStrategy();
   public IContentCreationStrategy CreateCustomTextContentStrategy(int pageIndex, params string[] Contents) => new CustomContentCreationStrategy(Contents[pageIndex]);
-
-  public IContentCreationStrategy CreateImageContentStrategy() => new ImageContentCreationStrategy();
-
+  public IContentCreationStrategy CreateCatImageContentStrategy() => new CatImageContentCreationStrategy();
+  public IContentCreationStrategy CreateImageContentStrategy(int width, int height) => new ImageContentCreationStrategy(width, height);
   public IContentCreationStrategy CreateRandomTextContentStrategy() => new RandomContentCreationStrategy();
 
 }

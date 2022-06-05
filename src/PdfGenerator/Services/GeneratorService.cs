@@ -28,7 +28,7 @@ public class GeneratorService : IGeneratorService
       {
         p.Margin(50);
         p.Size(data.Width, data.Height, Unit.Point);
-        p.DefaultTextStyle(t => t.FontSize(30));
+        p.DefaultTextStyle(t => t.FontSize(18));
 
         p.Content().Column(c =>
         {
@@ -38,7 +38,8 @@ public class GeneratorService : IGeneratorService
             {
               PdfContent.RandomSentences => PageContentService.CreateRandomTextContentStrategy(),
               PdfContent.Empty => PageContentService.CreateRandomTextContentStrategy(),
-              PdfContent.Images => PageContentService.CreateImageContentStrategy(),
+              PdfContent.Images => PageContentService.CreateImageContentStrategy((int)data.Width, (int)data.Height),
+              PdfContent.CatImages=> PageContentService.CreateCatImageContentStrategy(),
               _ => throw new NotImplementedException(),
             };
             contentCreationStrategy.Use(c.Item());

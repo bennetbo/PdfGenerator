@@ -6,5 +6,6 @@ public enum PdfContent
 {
   Empty,
   RandomSentences,
+  CatImages,
   Images
 }
