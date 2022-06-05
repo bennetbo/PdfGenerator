@@ -1,4 +1,5 @@
 ﻿using PdfGenerator.DTOs;
+using PdfGenerator.Models;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -7,12 +8,19 @@ using QuestPDF.Infrastructure;
 namespace PdfGenerator.Services;
 public interface IGeneratorService
 {
-  byte[] Generate(GenerationDTO data);
+  byte[] Generate(GenerationDTO data, PdfContent content = PdfContent.RandomSentences);
 }
 
 public class GeneratorService : IGeneratorService
 {
-  public byte[] Generate(GenerationDTO data)
+  public GeneratorService(IPageContentService pageContentService)
+  {
+    PageContentService = pageContentService;
+  }
+
+  public IPageContentService PageContentService { get; }
+
+  public byte[] Generate(GenerationDTO data, PdfContent content = PdfContent.RandomSentences)
   {
     return Document.Create(c =>
     {
@@ -24,10 +32,18 @@ public class GeneratorService : IGeneratorService
 
         p.Content().Column(c =>
         {
-          foreach (var i in Enumerable.Range(0, data.PageCount))
+          foreach (var pageIndex in Enumerable.Range(0, data.PageCount))
           {
-            c.Item().Text(Placeholders.Sentence());
-            if (i < data.PageCount - 1)
+            IContentCreationStrategy contentCreationStrategy = content switch
+            {
+              PdfContent.RandomSentences => PageContentService.CreateRandomTextContentStrategy(),
+              PdfContent.Empty => PageContentService.CreateRandomTextContentStrategy(),
+              PdfContent.Images => PageContentService.CreateImageContentStrategy(),
+              _ => throw new NotImplementedException(),
+            };
+            contentCreationStrategy.Use(c.Item());
+
+            if (pageIndex < data.PageCount - 1)
               c.Item().PageBreak();
           }
         });
