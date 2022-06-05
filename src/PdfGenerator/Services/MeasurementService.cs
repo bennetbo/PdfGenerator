@@ -41,7 +41,6 @@ namespace PdfGenerator.Services
     }
 
     public bool IsValidPageSize(string? requestSize) => requestSize != null && _pageSizes.ContainsKey(requestSize!.ToLower());
-
     public bool IsValidWidth(int width) => width <= MaxWidth && width >= MinWidth;
     public bool IsValidHeight(int height) => height >= MinHeight && height <= MaxHeight;
     public bool IsValidSizeParams(int width, int height) => IsValidHeight(height) && IsValidWidth(width);
