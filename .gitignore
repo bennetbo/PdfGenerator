@@ -45,7 +45,7 @@ Generated\ Files/
 
 # NUnit
 *.VisualState.xml
-coverage/*.xml
+**/Coverage/*.xml
 nunit-*.xml
 
 # Build Results of an ATL Project
@@ -348,3 +348,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/PdfGenerator.Test/Coverage
