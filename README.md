@@ -1,1 +1,99 @@
+
 # PdfGenerator
+
+This web service generates PDF files with easy-to-understand and standard-compliant measurement parameters for software testing and custom usage.
+
+Technologies:
+
+
+## Tech Stack
+
+**Server:** Microsoft.AspNetCore, QuestPDF
+
+**Client:** ... missing
+
+
+
+## API Reference
+
+#### Get all valid page size aliases
+
+```http
+  GET /pagesizes
+```
+returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
+
+#### Generate a PDF document containg lorem-impsum sentences
+
+##### by alias
+
+```http
+  GET /generate/${pagesize}/${pagecount}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `pagesize`      | `PageSize` | **Required**. Pagesize alias to use for file generation |
+| `pagecount`     | `int`    | **Required**. Number of pages the document should have |
+
+##### or by using explicit size arguments
+```http
+  GET /generate/${width}/${height}/${pagecount}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `width`      | `int` | **Required**. Page width to be used in document generation |
+| `height`      | `int` | **Required**. Page height to be used in document generation |
+| `pagecount`     | `int`    | **Required**. Number of pages the document should have |
+
+## Contents
+
+#### Get a PDF document with empty pages
+```http
+  GET /generate/empty/${pagesize}/${pagecount}
+```
+```http
+  GET /generate/empty/${width}/${height}/${pagecount}
+```
+
+#### Get a PDF document with gradient images
+```http
+  GET /generate/imaged/${pagesize}/${pagecount}
+```
+```http
+  GET /generate/imaged/${width}/${height}/${pagecount}
+```
+
+#### Get a PDF document with an image with an adorable cat
+```http
+  GET /generate/imaged/cat/${pagesize}/${pagecount}
+```
+```http
+  GET /generate/imaged/cat/${width}/${height}/${pagecount}
+```
+
+#### Get a PDF document with an image with an adorable cat
+```http
+  GET /generate/imaged/cat/${pagesize}/${pagecount}
+```
+```http
+  GET /generate/imaged/cat/${width}/${height}/${pagecount}
+```
+## Environment Variables
+
+The application is configurable by customizing these environment variables:
+
+ = naming schema for download
+| Parameter                     | Description                       |
+| :---------------------------- | :-------------------------------- |
+| `FILE_NAMING_SCHEMA`          | Naming schema used for creation of document filenames| 
+
+
+## Badges
+
+
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
+
