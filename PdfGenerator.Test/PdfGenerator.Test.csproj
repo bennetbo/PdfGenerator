@@ -21,8 +21,4 @@
     <ProjectReference Include="..\PdfGenerator\PdfGenerator.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Coverage\" />
-  </ItemGroup>
-
 </Project>
