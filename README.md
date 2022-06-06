@@ -36,7 +36,7 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 | `pagecount`     | `int`    | **Required**. Number of pages the document should have |
 
 
-## Contents
+### Contents
 
 #### Get a PDF document with empty pages
 ```http
