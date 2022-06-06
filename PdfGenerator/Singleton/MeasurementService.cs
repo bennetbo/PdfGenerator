@@ -3,7 +3,7 @@ using QuestPDF.Infrastructure;
 
 namespace PdfGenerator.Services
 {
-  interface IMeasurementService
+  public interface IMeasurementService
   {
     int MaxWidth { get; }
     int MaxHeight { get; }

@@ -3,7 +3,6 @@ using PdfGenerator.DTOs;
 using PdfGenerator.Models;
 using PdfGenerator.Validators;
 using QuestPDF.Helpers;
-using SkiaSharp;
 
 namespace PdfGenerator.Services;
 
