@@ -39,7 +39,7 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 ### Contents
 
 #### Get a PDF document with empty pages
-```http
+```
   GET /generate/empty/${pagesize}/${pagecount}
 ```
 ```http
