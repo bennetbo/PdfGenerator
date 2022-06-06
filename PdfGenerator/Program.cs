@@ -1,8 +1,8 @@
 using FluentValidation;
 using PdfGenerator.DTOs;
 using PdfGenerator.Models;
+using PdfGenerator.Scoped;
 using PdfGenerator.Services;
-using PdfGenerator.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +17,8 @@ builder.Services.AddEndpointsApiExplorer()
   .AddSingleton<IMeasurementService, MeasurementService>()
   .AddSingleton<IPdfContentService<PdfPageContent>, PageContentService>()
   .AddSingleton<IPdfContentService<PdfFooterContent>, FooterContentService>()
-  .AddScoped<IValidator<PageSizeGenerationParams>, PagesizeValidator>()
-  .AddScoped<IValidator<ExplicitGenerationParams>, ExplicitParamsValidator>();
+  .AddScoped<IValidator<PageSizeGenerationParams>, PageCountValidator>()
+  .AddScoped<IValidator<ExplicitGenerationParams>, DocumentGenerationExplicitParamsValidator>();
 
 var app = builder.Build();
 

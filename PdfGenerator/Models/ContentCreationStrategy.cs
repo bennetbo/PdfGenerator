@@ -1,14 +1,10 @@
-﻿using PdfGenerator.DTOs;
-using QuestPDF.Infrastructure;
+﻿using QuestPDF.Infrastructure;
 
 namespace PdfGenerator.Models;
-public interface IContentCreationStrategy
-{
-  void Use(IContainer container);
-}
+
+public delegate void ContentCreationStrategy(IContainer container);
+
 public interface IPdfContentService<PdfContentType>
 {
-  IContentCreationStrategy GetContentCreationStrategy(PdfContentType pageContent, int width, int height);
+  ContentCreationStrategy GetContentCreationStrategy(PdfContentType pageContent, int width, int height);
 }
-
-

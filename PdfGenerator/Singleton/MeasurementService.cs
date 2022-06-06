@@ -3,7 +3,7 @@ using QuestPDF.Infrastructure;
 
 namespace PdfGenerator.Services
 {
-  interface IMeasurementService
+  public interface IMeasurementService
   {
     int MaxWidth { get; }
     int MaxHeight { get; }
@@ -25,8 +25,8 @@ namespace PdfGenerator.Services
     public IEnumerable<string> AvailableSizes => _pageSizes.Keys;
     public int MaxWidth { get; } = (int)Size.Max.Width;
     public int MaxHeight { get; } = (int)Size.Max.Height;
-    public int MinWidth { get; } = (int)Size.Zero.Width;
-    public int MinHeight { get; } = (int)Size.Zero.Height;
+    public int MinWidth { get; } = (int)Size.Zero.Width + 300;
+    public int MinHeight { get; } = (int)Size.Zero.Height + 300;
 
     public MeasurementService()
     {

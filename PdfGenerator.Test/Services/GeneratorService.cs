@@ -16,8 +16,8 @@ public class GeneratorServiceTests
   [Test]
   public void TestGenerate_InputIsStrategyStubs_CallsPageStubPageCountTimesAndFooterStubOneTime([Range(1, 30)]int pageCount)
   {
-    var pageContentStrategyStub = new Mock<IContentCreationStrategy>();
-    var footerContentStrategyStub = new Mock<IContentCreationStrategy>();
+    var pageContentStrategyStub = new Mock<ContentCreationStrategy>();
+    var footerContentStrategyStub = new Mock<ContentCreationStrategy>();
     generatorService.Generate(400, 450, pageCount, pageContentStrategyStub.Object, footerContentStrategyStub.Object);
     Assert.Multiple(() =>
     {
