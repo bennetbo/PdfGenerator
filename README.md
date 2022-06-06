@@ -11,7 +11,7 @@ This web service generates PDF files with easy-to-understand and standard-compli
 ```
 returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 
-#### Generate a PDF document containg lorem-impsum sentences
+#### Generate a PDF document containing lorem-impsum sentences
 
 ##### by alias
 
