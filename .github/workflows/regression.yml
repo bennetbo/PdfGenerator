@@ -33,7 +33,7 @@ jobs:
     - name: Add Coverage Comment
       uses: 5monkeys/cobertura-action@v12
       with:
-        path: coverage/*.xml
+        path: coverage/**/*.xml
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         minimum_coverage: 75
         fail_below_threshold: false
