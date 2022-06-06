@@ -29,7 +29,7 @@ jobs:
     - name: Go to Test Directory
       run: cd .\PdfGenerator.Test
     - name: List Tests
-      run: dotnet test -t
+      run: dotnet test --no-build -t
     - name: Test
       run: dotnet test --no-build --verbosity normal -r ".\coverage" --collect:"XPlat Code Coverage"
     - name: Copy coverage.cobertura.xml to root
@@ -37,7 +37,7 @@ jobs:
     - name: Add Coverage Comment
       uses: 5monkeys/cobertura-action@v12
       with:
-        path: ./coverage.cobertura.xml
+        path: ../coverage.cobertura.xml
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         minimum_coverage: 75
         fail_below_threshold: false
