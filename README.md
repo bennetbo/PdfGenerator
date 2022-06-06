@@ -81,7 +81,7 @@ To restore dependencies from NuGet
 ```powershell
   dotnet restore
 ```
-### Restore Dependencies
+### Build
 
 To build the application and the test libary
 
@@ -101,10 +101,9 @@ To run tests, run the following command
 
 The application is configurable by customizing these environment variables:
 
- = naming schema for download
-| Parameter                     | Description                       |
-| :---------------------------- | :-------------------------------- |
-| `FILE_NAMING_SCHEMA`          | Naming schema used for creation of document filenames| 
+| Parameter                     | Description                                             |
+| :---------------------------- | :------------------------------------------------------ |
+| `FILE_NAMING_SCHEMA`          | Naming schema used for creation of document filenames   | 
 
 ## Tech Stack
 
