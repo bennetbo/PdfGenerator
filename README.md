@@ -6,7 +6,7 @@ This web service generates PDF files with easy-to-understand and standard-compli
 
 #### Get all valid page size aliases
 
-```http
+```
   GET /pagesizes
 ```
 returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
@@ -15,7 +15,7 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 
 ##### by alias
 
-```http
+```
   GET /generate/${pagesize}/${pagecount}
 ```
 
@@ -25,7 +25,7 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 | `pagecount`     | `int`    | **Required**. Number of pages the document should have |
 
 ##### or by using explicit size arguments
-```http
+```
   GET /generate/${width}/${height}/${pagecount}
 ```
 
@@ -42,31 +42,31 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 ```
   GET /generate/empty/${pagesize}/${pagecount}
 ```
-```http
+```
   GET /generate/empty/${width}/${height}/${pagecount}
 ```
 
 #### Get a PDF document with gradient images
-```http
+```
   GET /generate/imaged/${pagesize}/${pagecount}
 ```
-```http
+```
   GET /generate/imaged/${width}/${height}/${pagecount}
 ```
 
 #### Get a PDF document with an image with an adorable cat
-```http
+```
   GET /generate/imaged/cat/${pagesize}/${pagecount}
 ```
-```http
+```
   GET /generate/imaged/cat/${width}/${height}/${pagecount}
 ```
 
 #### Get a PDF document with an image with an adorable cat
-```http
+```
   GET /generate/imaged/cat/${pagesize}/${pagecount}
 ```
-```http
+```
   GET /generate/imaged/cat/${width}/${height}/${pagecount}
 ```
 
