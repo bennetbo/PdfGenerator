@@ -1,0 +1,44 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+      runs-on: windows-latest
+      steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore    
+
+  test-with-coverage:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Go to Test Directory
+      run: cd .\PdfGenerator.Test
+    - name: Test
+      run: dotnet test --no-build --verbosity normal -r ".\coverage" --collect:"XPlat Code Coverage"
+    - name: Add Coverage Comment
+      uses: 5monkeys/cobertura-action@v12
+      with:
+        path: coverage/*.xml
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        minimum_coverage: 75
+        fail_below_threshold: false
+        show_line: true
+        show_branch: false
+        show_class_names: true
+        show_missing: true
+        only_changed_files: false
