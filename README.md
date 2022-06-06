@@ -3,15 +3,12 @@
 
 This web service generates PDF files with easy-to-understand and standard-compliant measurement parameters for software testing and custom usage.
 
-Technologies:
-
 
 ## Tech Stack
 
 **Server:** Microsoft.AspNetCore, QuestPDF
 
 **Client:** ... missing
-
 
 
 ## API Reference
@@ -47,6 +44,7 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 | `height`      | `int` | **Required**. Page height to be used in document generation |
 | `pagecount`     | `int`    | **Required**. Number of pages the document should have |
 
+
 ## Contents
 
 #### Get a PDF document with empty pages
@@ -80,6 +78,34 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 ```http
   GET /generate/imaged/cat/${width}/${height}/${pagecount}
 ```
+
+
+## Commands
+Run the following commands sequentially to resolve the application dependencies, build the application, and run the tests
+
+### Restore Dependencies
+
+To restore dependencies from NuGet
+
+```powershell
+  dotnet restore
+```
+### Restore Dependencies
+
+To build the application and the test libary
+
+```powershell
+  dotnet build --no-restore
+```
+
+### Running Tests
+
+To run tests, run the following command
+
+```powershell
+  dotnet test --no-build --verbosity normal
+```
+
 ## Environment Variables
 
 The application is configurable by customizing these environment variables:
@@ -89,8 +115,6 @@ The application is configurable by customizing these environment variables:
 | :---------------------------- | :-------------------------------- |
 | `FILE_NAMING_SCHEMA`          | Naming schema used for creation of document filenames| 
 
-
 ## Badges
-
 
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
