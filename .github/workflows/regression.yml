@@ -22,6 +22,7 @@ jobs:
 
   test-pdf-generator:
     runs-on: windows-latest
+    needs: build-pdf-generator
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -33,7 +34,7 @@ jobs:
     - name: List Tests
       run: dotnet test --no-build -t
     - name: Test
-      run: dotnet test --verbosity normal -r ".\coverage" --collect:"XPlat Code Coverage"
+      run: dotnet test --verbosity normal -r ".\Coverage" --collect:"XPlat Code Coverage"
     - name: Copy coverage.cobertura.xml to root
       run: cp .\Coverage\**\coverage.cobertura.xml ..
     - name: Add Coverage Comment
