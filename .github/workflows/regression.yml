@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-pdf-generator:
       runs-on: windows-latest
       steps:
       - uses: actions/checkout@v3
@@ -18,7 +18,7 @@ jobs:
       - name: Build
         run: dotnet build --no-restore    
 
-  test-with-coverage:
+  test-pdf-generator:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
@@ -28,12 +28,16 @@ jobs:
         dotnet-version: 6.0.x
     - name: Go to Test Directory
       run: cd .\PdfGenerator.Test
+    - name: List Tests
+      run: dotnet test -t
     - name: Test
       run: dotnet test --no-build --verbosity normal -r ".\coverage" --collect:"XPlat Code Coverage"
+    - name: Copy coverage.cobertura.xml to root
+      run: cp .\Coverage\**\coverage.cobertura.xml ..
     - name: Add Coverage Comment
       uses: 5monkeys/cobertura-action@v12
       with:
-        path: coverage/**/*.xml
+        path: ./coverage.cobertura.xml
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         minimum_coverage: 75
         fail_below_threshold: false
