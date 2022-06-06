@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfGenerator.Test", "PdfGenerator.Test\PdfGenerator.Test.csproj", "{E3DDC600-977D-481B-9E90-C6FC6690ABD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{486A24F5-5CC3-4F53-BB60-9434B717AFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486A24F5-5CC3-4F53-BB60-9434B717AFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{486A24F5-5CC3-4F53-BB60-9434B717AFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3DDC600-977D-481B-9E90-C6FC6690ABD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3DDC600-977D-481B-9E90-C6FC6690ABD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3DDC600-977D-481B-9E90-C6FC6690ABD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3DDC600-977D-481B-9E90-C6FC6690ABD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

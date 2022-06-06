@@ -2,6 +2,7 @@
 using FluentValidation.Results;
 using PdfGenerator.DTOs;
 using PdfGenerator.Services;
+using QuestPDF.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 
 namespace PdfGenerator.Validators;
@@ -61,9 +62,21 @@ class ResultingValidationResult<ResultType> : CustomValidationResult
   public ResultType? Result { get; init; }
 }
 
-class PagesizeValidator : AbstractValidator<PageSizeGenerationParams>
+class PageCountValidator<ParamType> : AbstractValidator<ParamType>
+  where ParamType : IHasPageCount
 {
-  public PagesizeValidator(IMeasurementService measurementService)
+  public PageCountValidator()
+  {
+    RuleFor(x => x.PageCount)
+      .NotNull().WithMessage("PageCount required")
+      .GreaterThanOrEqualTo(1).WithMessage("PageCount must be greater or equal to 1")
+      .LessThanOrEqualTo(1000).WithMessage("PageCount must be greater or equal to 1000");
+  }
+}
+
+class PagesizeValidator : PageCountValidator<PageSizeGenerationParams>
+{
+  public PagesizeValidator(IMeasurementService measurementService) : base()
   {
     RuleFor(x => x.PageSize)
      .NotNull().WithMessage("Pagesize required")
@@ -72,14 +85,15 @@ class PagesizeValidator : AbstractValidator<PageSizeGenerationParams>
   }
 }
 
-class ExplicitParamsValidator : AbstractValidator<ExplicitGenerationParams>
+class ExplicitParamsValidator : PageCountValidator<ExplicitGenerationParams>
 {
-  public ExplicitParamsValidator(IMeasurementService measurementService)
+  public ExplicitParamsValidator(IMeasurementService measurementService) : base()
   {
     RuleFor(x => x.Width)
      .NotNull().WithMessage("Width required")
      .Must(width => measurementService.IsValidWidth(width ?? 0))
      .WithMessage("Width must be valid");
+
     RuleFor(x => x.Height)
      .NotNull().WithMessage("Height required")
      .Must(height => measurementService.IsValidWidth(height ?? 0))

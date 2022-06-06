@@ -18,7 +18,7 @@ namespace PdfGenerator.Services
     PageSize GetPageSizeOrDefault(int width, int height, PageSize? defaultPageSize = null);
   }
 
-  class MeasurementService : IMeasurementService
+  public class MeasurementService : IMeasurementService
   {
     private readonly Dictionary<string, PageSize> _pageSizes;
 
@@ -45,11 +45,10 @@ namespace PdfGenerator.Services
     public bool IsValidHeight(int height) => height >= MinHeight && height <= MaxHeight;
     public bool IsValidSizeParams(int width, int height) => IsValidHeight(height) && IsValidWidth(width);
     public PageSize GetValidPageSize(string requestSize, string defaultValue = "a4")
-      => _pageSizes.ContainsKey(requestSize?.ToLower() ?? string.Empty) ? _pageSizes[requestSize!] : _pageSizes[defaultValue];
+      => IsValidPageSize(requestSize)
+           ? _pageSizes[requestSize!.ToLower()]
+           : IsValidPageSize(defaultValue) ? _pageSizes[defaultValue.ToLower()] : PageSizes.A4;
     public PageSize GetPageSizeOrDefault(int width, int height, PageSize? defaultPageSize = null)
-    {
-      var valid = IsValidSizeParams(width, height);
-      return valid ? new PageSize(width, height) : defaultPageSize ?? PageSizes.A4;
-    }
+      => IsValidSizeParams(width, height) ? new PageSize(width, height) : defaultPageSize ?? PageSizes.A4;
   }
 }
