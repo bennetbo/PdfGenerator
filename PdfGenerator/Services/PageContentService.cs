@@ -1,25 +1,17 @@
 ﻿using PdfGenerator.DTOs;
 using PdfGenerator.Models;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+
 namespace PdfGenerator.Services;
 public class PageContentService : IPdfContentService<PdfPageContent>
 {
-  public IContentCreationStrategy CreateEmtpyContentStrategy() 
-    => new EmptyContentCreationStrategy();
-  public IContentCreationStrategy CreateCustomTextContentStrategy(int pageIndex, params string[] Contents) 
-    => new CustomContentCreationStrategy(Contents[pageIndex]);
-  public IContentCreationStrategy CreateCatImageContentStrategy() 
-    => new CatImageContentCreationStrategy();
-  public IContentCreationStrategy CreateImageContentStrategy(int width, int height) 
-    => new ImageContentCreationStrategy(width, height);
-  public IContentCreationStrategy CreateRandomTextContentStrategy() 
-    => new RandomContentCreationStrategy();
-
-  public IContentCreationStrategy GetContentCreationStrategy(PdfPageContent pageContent, int width, int height) => pageContent switch
+  public ContentCreationStrategy GetContentCreationStrategy(PdfPageContent pageContent, int width, int height) => pageContent switch
   {
-    PdfPageContent.RandomSentences => CreateRandomTextContentStrategy(),
-    PdfPageContent.Empty => CreateEmtpyContentStrategy(),
-    PdfPageContent.Images => CreateImageContentStrategy(width, height),
-    PdfPageContent.CatImages => CreateCatImageContentStrategy(),
+    PdfPageContent.RandomSentences => new ContentCreationStrategy(c => c.Text(Placeholders.Sentence())),
+    PdfPageContent.Empty => new ContentCreationStrategy(_c => { }),
+    PdfPageContent.Images => new ContentCreationStrategy(c => c.Image(Placeholders.Image(width, height))),
+    PdfPageContent.CatImages => new ContentCreationStrategy(c => c.Image("./Images/Professor.jpeg")),
     _ => throw new NotImplementedException(),
   };
 }

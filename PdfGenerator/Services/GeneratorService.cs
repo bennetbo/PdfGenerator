@@ -6,12 +6,12 @@ using QuestPDF.Infrastructure;
 namespace PdfGenerator.Services;
 public interface IGeneratorService
 {
-  byte[] Generate(float width, float height, int pageCount, IContentCreationStrategy pageContentCreationStrategy, IContentCreationStrategy footerContentCreationStrategy);
+  byte[] Generate(float width, float height, int pageCount, ContentCreationStrategy pageContentCreationStrategy, ContentCreationStrategy footerContentCreationStrategy);
 }
 
 public class GeneratorService : IGeneratorService
 {
-  public byte[] Generate(float width, float height, int pageCount, IContentCreationStrategy pageContentCreationStrategy, IContentCreationStrategy footerContentCreationStrategy)
+  public byte[] Generate(float width, float height, int pageCount, ContentCreationStrategy pageContentCreationStrategy, ContentCreationStrategy footerContentCreationStrategy)
   {
     return Document.Create(c =>
     {
@@ -25,12 +25,12 @@ public class GeneratorService : IGeneratorService
         {
           foreach (var pageIndex in Enumerable.Range(0, pageCount))
           {
-            pageContentCreationStrategy.Use(c.Item());
+            pageContentCreationStrategy.Invoke(c.Item());
             if (pageIndex < pageCount - 1)
               c.Item().PageBreak();
           }
         });
-        footerContentCreationStrategy.Use(p.Footer());
+        footerContentCreationStrategy.Invoke(p.Footer());
       });
     }).WithMetadata(new DocumentMetadata()
     {
