@@ -1,15 +1,6 @@
-
 # PdfGenerator
 
 This web service generates PDF files with easy-to-understand and standard-compliant measurement parameters for software testing and custom usage.
-
-
-## Tech Stack
-
-**Server:** Microsoft.AspNetCore, QuestPDF
-
-**Client:** ... missing
-
 
 ## API Reference
 
@@ -114,6 +105,11 @@ The application is configurable by customizing these environment variables:
 | Parameter                     | Description                       |
 | :---------------------------- | :-------------------------------- |
 | `FILE_NAMING_SCHEMA`          | Naming schema used for creation of document filenames| 
+
+## Tech Stack
+
+#### **Server:** Microsoft.AspNetCore, QuestPDF | **Client:** ... missing
+
 
 ## Badges
 
