@@ -36,10 +36,8 @@ jobs:
     steps:
       - name: Install dotnet-format tool
         run: dotnet tool install -g dotnet-format
-      - name: Show Tree
-        run: tree ..
-      - name: List Files
-        run: ls ..
+      - name: Navigate to root directory
+        run: cd ..
       - name: Run dotnet format
         run: dotnet format --no-restore --verbosity diagnostic
 
