@@ -41,7 +41,7 @@ jobs:
       - name: List Files
         run: ls ..
       - name: Run dotnet format
-        run: dotnet format '../PdfGenerator.sln' --no-restore --verbosity diagnostic
+        run: dotnet format --no-restore --verbosity diagnostic
 
   test-pdf-generator:
     runs-on: ubuntu-latest
