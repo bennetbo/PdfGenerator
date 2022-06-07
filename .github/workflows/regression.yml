@@ -18,7 +18,7 @@ on:
 
 jobs:
   build-pdf-generator:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET
@@ -31,7 +31,7 @@ jobs:
         run: dotnet build --no-restore
 
   dotnet-format:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build-pdf-generator
     steps:
       - name: Install dotnet-format tool
@@ -40,7 +40,7 @@ jobs:
         run: dotnet format '..\PdfGenerator.sln' --no-restore --verbosity diagnostic
 
   test-pdf-generator:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build-pdf-generator
     steps:
       - uses: actions/checkout@v3
