@@ -39,7 +39,7 @@ jobs:
       - name: Show Tree
         run: tree
       - name: Run dotnet format
-        run: dotnet format '..\PdfGenerator.sln' --no-restore --verbosity diagnostic
+        run: dotnet format '../PdfGenerator.sln' --no-restore --verbosity diagnostic
 
   test-pdf-generator:
     runs-on: ubuntu-latest
@@ -51,13 +51,13 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: Go to Test Directory
-        run: cd .\PdfGenerator.Test
+        run: cd ./PdfGenerator.Test
       - name: List Tests
         run: dotnet test --no-build -t
       - name: Test
         run: dotnet test --verbosity normal -r ".\Coverage" --collect:"XPlat Code Coverage"
       - name: Copy coverage.cobertura.xml to root
-        run: cp .\Coverage\**\coverage.cobertura.xml ..
+        run: cp ./Coverage/**/coverage.cobertura.xml ..
       - name: Add Coverage Comment
         uses: 5monkeys/cobertura-action@v12
         with:
