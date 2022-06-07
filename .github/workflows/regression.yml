@@ -30,6 +30,22 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
 
+  dotnet-format:
+    runs-on: windows-latest
+    needs: build-pdf-generator
+    steps:
+      - name: Install dotnet-format tool
+        run: dotnet tool install -g dotnet-format
+      - name: Print current working directory
+        run: pwd
+      - name: Go to root directory
+        run: cd ..
+      - name: List files
+        run: ls
+      - name: Run dotnet format
+        run: dotnet format '.\PdfGenerator.sln' --no-restore --verbosity diagnostic
+
+
   test-pdf-generator:
     runs-on: windows-latest
     needs: build-pdf-generator
