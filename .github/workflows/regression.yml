@@ -2,14 +2,24 @@ name: Regression
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths:
+      - "**.cs"
+      - "**.csproj"
+      - "**.sln"
+      - ".editorconfig"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths:
+      - "**.cs"
+      - "**.csproj"
+      - "**.sln"
+      - ".editorconfig"
 
 jobs:
   build-pdf-generator:
-      runs-on: windows-latest
-      steps:
+    runs-on: windows-latest
+    steps:
       - uses: actions/checkout@v3
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
@@ -18,35 +28,44 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --no-restore    
+        run: dotnet build --no-restore
 
   test-pdf-generator:
     runs-on: windows-latest
     needs: build-pdf-generator
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: 6.0.x
-    - name: Go to Test Directory
-      run: cd .\PdfGenerator.Test
-    - name: List Tests
-      run: dotnet test --no-build -t
-    - name: Test
-      run: dotnet test --verbosity normal -r ".\Coverage" --collect:"XPlat Code Coverage"
-    - name: Copy coverage.cobertura.xml to root
-      run: cp .\Coverage\**\coverage.cobertura.xml ..
-    - name: Add Coverage Comment
-      uses: 5monkeys/cobertura-action@v12
-      with:
-        path: ../coverage.cobertura.xml
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        minimum_coverage: 75
-        fail_below_threshold: false
-        skip_covered: false
-        show_line: true
-        show_branch: true
-        show_class_names: true
-        show_missing: true
-        only_changed_files: false
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+      - name: Go to Test Directory
+        run: cd .\PdfGenerator.Test
+      - name: List Tests
+        run: dotnet test --no-build -t
+      - name: Test
+        run: dotnet test --verbosity normal -r ".\Coverage" --collect:"XPlat Code Coverage"
+      - name: Copy coverage.cobertura.xml to root
+        run: cp .\Coverage\**\coverage.cobertura.xml ..
+      - name: Add Coverage Comment
+        uses: 5monkeys/cobertura-action@v12
+        with:
+          path: ../coverage.cobertura.xml
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          minimum_coverage: 75
+          fail_below_threshold: false
+          skip_covered: false
+          show_line: true
+          show_branch: true
+          show_class_names: true
+          show_missing: true
+          only_changed_files: false
+
+  dotnet-format:
+    runs-on: windows-latest
+    needs: build-pdf-generator
+    steps:
+      - name: Install dotnet-format tool
+        run: dotnet tool install -g dotnet-format
+      - name: Run dotnet format
+        run: dotnet format '.\' --folder --check --verbosity diagnostic
