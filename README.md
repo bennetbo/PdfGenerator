@@ -54,7 +54,7 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
   GET /generate/imaged/${width}/${height}/${pagecount}
 ```
 
-#### Get a PDF document with an image with an adorable cat
+#### Get a PDF document with an image of an adorable cat
 ```
   GET /generate/imaged/cat/${pagesize}/${pagecount}
 ```
