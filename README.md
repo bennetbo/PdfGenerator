@@ -19,21 +19,21 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
   GET /generate/${pagesize}/${pagecount}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `pagesize`      | `PageSize` | **Required**. Pagesize alias to use for file generation |
-| `pagecount`     | `int`    | **Required**. Number of pages the document should have |
+| Parameter       | Type        | Description                                                 |
+| :-------------- | :---------- | :---------------------------------------------------------- |
+| `pagesize`      | `PageSize`  | **Required**. Pagesize alias to use for file generation     |
+| `pagecount`     | `int`       | **Required**. Number of pages the document should have      |
 
 ##### or by using explicit size arguments
 ```
   GET /generate/${width}/${height}/${pagecount}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `width`      | `int` | **Required**. Page width to be used in document generation |
-| `height`      | `int` | **Required**. Page height to be used in document generation |
-| `pagecount`     | `int`    | **Required**. Number of pages the document should have |
+| Parameter       | Type        | Description                                                 |
+| :-------------- | :---------- | :---------------------------------------------------------- |
+| `width`         | `int`       | **Required**. Page width to be used in document generation  |
+| `height`        | `int`       | **Required**. Page height to be used in document generation |
+| `pagecount`     | `int`       | **Required**. Number of pages the document should have      |
 
 
 ### Contents
@@ -52,14 +52,6 @@ returns a list of aliased `PageSize` like `A4`, `A0` or `LETTER`, ...
 ```
 ```
   GET /generate/imaged/${width}/${height}/${pagecount}
-```
-
-#### Get a PDF document with an image with an adorable cat
-```
-  GET /generate/imaged/cat/${pagesize}/${pagecount}
-```
-```
-  GET /generate/imaged/cat/${width}/${height}/${pagecount}
 ```
 
 #### Get a PDF document with an image with an adorable cat
