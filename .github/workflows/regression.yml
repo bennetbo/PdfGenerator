@@ -43,10 +43,8 @@ jobs:
         run: dotnet tool install -g dotnet-format
       - name: Navigate to root directory
         run: cd ..
-      - name: List files
-        run: ls
       - name: Run dotnet format
-        run: dotnet format --no-restore --verbosity diagnostic
+        run: dotnet format --no-restore --verify-no-changes --verbosity diagnostic
 
   test-pdf-generator:
     runs-on: ubuntu-latest
@@ -59,8 +57,6 @@ jobs:
           dotnet-version: 6.0.x
       - name: Go to Test Directory
         run: cd ./PdfGenerator.Test
-      - name: List files
-        run: ls
       - name: List Tests
         run: dotnet test --no-build -t
       - name: Test
