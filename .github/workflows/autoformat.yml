@@ -1,0 +1,34 @@
+name: Format code on comment ('/autoformat')
+
+on:
+  issue_comment: # Issue comment includes comments on pull requests
+    types: [created, edited, deleted]
+
+jobs:
+  dotnet-format:
+    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/autoformat') # check if the comments come from pull request and is equal to /autoformat
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Install dotnet-format tool
+        run: dotnet tool install -g dotnet-format
+      - name: Run dotnet format
+        run: dotnet format --no-restore
+      - name: Commit files
+        if: steps.format.outputs.has-changes == 'true'
+        uses: EndBug/add-and-commit@v9.0.0
+        with:
+          author_name: Github Actions
+          author_email: actions@github.com
+          message: Autoformat code with dotnet-format.
+          ref: ${{ github.head_ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
