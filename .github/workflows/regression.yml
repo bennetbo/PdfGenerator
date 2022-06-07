@@ -68,4 +68,4 @@ jobs:
       - name: Install dotnet-format tool
         run: dotnet tool install -g dotnet-format
       - name: Run dotnet format
-        run: dotnet format '..\PdfGenerator.sln' --no-restore --verbosity diagnostic
+        run: dotnet format '..\..\PdfGenerator.sln' --no-restore --verbosity diagnostic
