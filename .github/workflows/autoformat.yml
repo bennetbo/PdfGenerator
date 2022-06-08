@@ -1,4 +1,4 @@
-name: Format code on comment ('/autoformat')
+name: Autoformat
 
 on:
   issue_comment: # Issue comment includes comments on pull requests
