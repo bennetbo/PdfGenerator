@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Setup .NET
         uses: actions/setup-dotnet@v2
         with:
@@ -25,7 +28,6 @@ jobs:
       - name: Run dotnet format
         run: dotnet format --no-restore
       - name: Commit files
-        if: steps.format.outputs.has-changes == 'true'
         uses: EndBug/add-and-commit@v9.0.0
         with:
           author_name: Github Actions
