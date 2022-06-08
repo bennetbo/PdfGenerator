@@ -8,7 +8,7 @@ namespace PdfGenerator.Services
     string Replace(string configFileName, int pageWidth, int pageHeight, int paceIndex);
   }
   public class FileNameService : IFilenameService
-  {    
+  {
     const char PLACEHOLDER_OPEN_CHAR = '{';
     const char PLACEHOLDER_CLOSE_CHAR = '}';
     const string PAGE_WIDTH_PLACEHOLDER = "PAGE_WIDTH";
@@ -17,7 +17,7 @@ namespace PdfGenerator.Services
 
     const StringSplitOptions FILE_NAMING_SCHEMA_SPLIT_OPTIONS = StringSplitOptions.RemoveEmptyEntries & StringSplitOptions.TrimEntries;
 
-    static string GetPlaceHolder(bool open) => open 
+    static string GetPlaceHolder(bool open) => open
       ? new(PLACEHOLDER_OPEN_CHAR, 2)
       : new(PLACEHOLDER_CLOSE_CHAR, 2);
     string PlaceholderOpen { get; } = GetPlaceHolder(open: true);
@@ -40,9 +40,9 @@ namespace PdfGenerator.Services
     {
       if (!HasValidDoubleBracketCount(fileName))
         throw new Exception($"invalid bracket count");
-      else if(!CanReplaceAll(fileName, out string[] unknownVariables))
+      else if (!CanReplaceAll(fileName, out string[] unknownVariables))
         throw new Exception($"invalid variables detected in fileschema: {string.Join("\n\t- ", unknownVariables)}");
-      else 
+      else
         return fileName.ReplaceImpl(PAGE_WIDTH_PLACEHOLDER, pageWidth, PlaceholderOpen, PlaceholderClose)
                        .ReplaceImpl(PAGE_HEIGHT_PLACEHOLDER, pageHeight, PlaceholderOpen, PlaceholderClose)
                        .ReplaceImpl(PAGE_COUNT_PLACEHOLDER, pageCount, PlaceholderOpen, PlaceholderClose);
