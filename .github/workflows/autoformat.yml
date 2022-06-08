@@ -28,7 +28,7 @@ jobs:
         with:
           author_name: Github Actions
           author_email: actions@github.com
-          message: Autoformat code with dotnet-format.
+          message: Automatically format code with dotnet-format.
           ref: ${{ github.head_ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
