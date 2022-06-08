@@ -2,11 +2,11 @@ name: Format code on comment ('/autoformat')
 
 on:
   issue_comment: # Issue comment includes comments on pull requests
-    types: [created, edited, deleted]
+    types: [created]
 
 jobs:
-  dotnet-format:
-    if: contains(github.event.comment.html_url, '/pull/') && contains(github.event.comment.body, '/autoformat') # check if the comments come from pull request and is equal to /autoformat
+  autoformat-with-dotnet-format:
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/autoformat') # check if the comments come from pull request and is equal to /autoformat
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
