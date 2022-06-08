@@ -7,6 +7,7 @@ namespace PdfGenerator.Services
   {
     string Replace(string configFileName, int pageWidth, int pageHeight, int paceIndex);
   }
+
   public class FileNameService : IFilenameService
   {
     const char PLACEHOLDER_OPEN_CHAR = '{';
@@ -33,6 +34,7 @@ namespace PdfGenerator.Services
                                  .ToArray();
       return unknownVariables.Length == 0;
     }
+    
     bool HasValidDoubleBracketCount(string fileName)
      => fileName.Split(PLACEHOLDER_OPEN_CHAR, FILE_NAMING_SCHEMA_SPLIT_OPTIONS).Length.Equals(fileName.Split(PLACEHOLDER_CLOSE_CHAR, FILE_NAMING_SCHEMA_SPLIT_OPTIONS).Length);
 

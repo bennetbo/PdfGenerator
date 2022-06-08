@@ -23,8 +23,6 @@ jobs:
         run: dotnet build --no-restore
       - name: Install dotnet-format tool
         run: dotnet tool install -g dotnet-format
-      - name: Navigate to root directory
-        run: cd ..
       - name: Run dotnet format
         run: dotnet format --no-restore
       - name: Commit files

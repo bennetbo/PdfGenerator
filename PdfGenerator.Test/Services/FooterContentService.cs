@@ -1,5 +1,5 @@
-﻿using PdfGenerator.DTOs;
-using PdfGenerator.Services;
+﻿using PdfGenerator.Core.Enums;
+using PdfGenerator.Core.Services;
 
 namespace PdfGenerator.Test.Services;
 public class FooterContentServiceTests
