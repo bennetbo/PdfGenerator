@@ -14,7 +14,7 @@ public class GeneratorServiceTests
   }
 
   [Test]
-  public void TestGenerate_InputIsStrategyStubs_CallsPageStubPageCountTimesAndFooterStubOneTime([Range(1, 30)]int pageCount)
+  public void TestGenerate_InputIsStrategyStubs_CallsPageStubPageCountTimesAndFooterStubOneTime([Range(1, 30)] int pageCount)
   {
     var pageContentStrategyStub = new Mock<ContentCreationStrategy>();
     var footerContentStrategyStub = new Mock<ContentCreationStrategy>();

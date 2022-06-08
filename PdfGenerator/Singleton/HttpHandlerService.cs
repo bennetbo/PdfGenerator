@@ -43,7 +43,7 @@ class HttpHandlerService : IHttpHandlerService
     this.configurationService = configurationService;
   }
 
-  PageSize GetPageSize<ParamType>(ParamType parameters) 
+  PageSize GetPageSize<ParamType>(ParamType parameters)
     where ParamType : IHasPageCount
   {
     return parameters switch
@@ -77,7 +77,7 @@ class HttpHandlerService : IHttpHandlerService
   {
     var validationResult = validator.Validate(generationParams);
 
-    return validationResult.IsValid 
+    return validationResult.IsValid
       ? GetResultImpl(generationParams, pageIndex, pageContent, footerContent)
       : Results.ValidationProblem(validationResult.Errors.ToErrorMessageDict());
   }

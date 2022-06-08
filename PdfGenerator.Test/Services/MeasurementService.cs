@@ -86,8 +86,8 @@ public class MeasurementServiceTest
 
   [Test, Combinatorial, Parallelizable]
   public void TestIsValidHeight_InputIsValidAndInvalidIntegers_ReturnValidResult(
-    [Range(VALID_PDF_MIN_SIZE, VALID_PDF_MIN_SIZE + 10)] int valid, 
-    [Range(VALID_PDF_MIN_SIZE - 11, VALID_PDF_MIN_SIZE - 1)] int lowerInvalid, 
+    [Range(VALID_PDF_MIN_SIZE, VALID_PDF_MIN_SIZE + 10)] int valid,
+    [Range(VALID_PDF_MIN_SIZE - 11, VALID_PDF_MIN_SIZE - 1)] int lowerInvalid,
     [Range(VALID_PDF_MAX_SIZE + 1, VALID_PDF_MAX_SIZE + 11)] int upperInvalid)
     => Assert.Multiple(() =>
       {
