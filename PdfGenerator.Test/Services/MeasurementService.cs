@@ -110,7 +110,7 @@ public class MeasurementServiceTest
   [Test, Sequential, Parallelizable]
   public void TestIsValidPageSize_InputIsValidAndInvalidPageSize_ReturnValidResult(
     [Values("a4", "a0", "letter")] string validPageSize,
-    [Values("  ", "fdsfsdf", "786767a")] string invalidPageSize)
+    [Values("  ", "fds", "786767a")] string invalidPageSize)
     => Assert.Multiple(() =>
     {
       Assert.That(measurementService.IsValidPageSize(validPageSize), Is.True);

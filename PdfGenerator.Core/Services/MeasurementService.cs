@@ -17,7 +17,7 @@ public interface IMeasurementService
   bool IsValidPageSize(string requestSize);
   bool IsValidSizeParams(int width, int height);
   PageSize GetValidPageSize(string requestSize, string defaultValue = "a4");
-  PageSize GetPageSizeOrDefault(int width, int height, PageSize? defaultPageSize = null);
+  PageSize GetPageSizeOrDefault(int width, int height, PageSize defaultPageSize = null);
 }
 
 public class MeasurementService : IMeasurementService
@@ -42,7 +42,7 @@ public class MeasurementService : IMeasurementService
       _pageSizes[Name] = Size!;
   }
 
-  public bool IsValidPageSize(string? requestSize) => requestSize != null && _pageSizes.ContainsKey(requestSize!.ToLower());
+  public bool IsValidPageSize(string requestSize) => requestSize != null && _pageSizes.ContainsKey(requestSize!.ToLower());
   public bool IsValidWidth(int width) => width <= MaxWidth && width >= MinWidth;
   public bool IsValidHeight(int height) => height >= MinHeight && height <= MaxHeight;
   public bool IsValidSizeParams(int width, int height) => IsValidHeight(height) && IsValidWidth(width);
@@ -50,6 +50,6 @@ public class MeasurementService : IMeasurementService
     => IsValidPageSize(requestSize)
          ? _pageSizes[requestSize!.ToLower()]
          : IsValidPageSize(defaultValue) ? _pageSizes[defaultValue.ToLower()] : PageSizes.A4;
-  public PageSize GetPageSizeOrDefault(int width, int height, PageSize? defaultPageSize = null)
+  public PageSize GetPageSizeOrDefault(int width, int height, PageSize defaultPageSize = null)
     => IsValidSizeParams(width, height) ? new PageSize(width, height) : defaultPageSize ?? PageSizes.A4;
 }
