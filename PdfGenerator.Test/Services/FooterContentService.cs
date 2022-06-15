@@ -1,5 +1,5 @@
-﻿using PdfGenerator.DTOs;
-using PdfGenerator.Services;
+﻿using PdfGenerator.Core.Enums;
+using PdfGenerator.Core.Services;
 
 namespace PdfGenerator.Test.Services;
 public class FooterContentServiceTests
@@ -7,7 +7,7 @@ public class FooterContentServiceTests
   const int DUMMY_WIDTH = 400;
   const int DUMMY_HEIGHT = 400;
 
-  private FooterContentService footerContentService;
+  private FooterContentService? footerContentService;
 
   [SetUp]
   public void Setup()

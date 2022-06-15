@@ -1,9 +1,11 @@
-﻿using PdfGenerator.Models;
+﻿using PdfGenerator.Core.Models;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
+using System.Linq;
 
-namespace PdfGenerator.Services;
+namespace PdfGenerator.Core.Services;
+
 public interface IGeneratorService
 {
   byte[] Generate(float width, float height, int pageCount, ContentCreationStrategy pageContentCreationStrategy, ContentCreationStrategy footerContentCreationStrategy);
@@ -38,4 +40,3 @@ public class GeneratorService : IGeneratorService
     }).GeneratePdf();
   }
 }
-

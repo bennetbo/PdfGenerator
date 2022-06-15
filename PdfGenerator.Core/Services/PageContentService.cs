@@ -1,9 +1,11 @@
-﻿using PdfGenerator.DTOs;
-using PdfGenerator.Models;
-using QuestPDF.Fluent;
+﻿using PdfGenerator.Core.Enums;
+using PdfGenerator.Core.Models;
 using QuestPDF.Helpers;
+using QuestPDF.Fluent;
+using System;
 
-namespace PdfGenerator.Services;
+namespace PdfGenerator.Core.Services;
+
 public class PageContentService : IPdfContentService<PdfPageContent>
 {
   public ContentCreationStrategy GetContentCreationStrategy(PdfPageContent pageContent, int width, int height) => pageContent switch

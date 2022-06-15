@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
 using PdfGenerator.DTOs;
-using PdfGenerator.Models;
 using PdfGenerator.Scoped;
-using PdfGenerator.Validators;
 using QuestPDF.Helpers;
 
 namespace PdfGenerator.Services;

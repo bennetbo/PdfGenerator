@@ -1,8 +1,10 @@
-﻿using PdfGenerator.DTOs;
-using PdfGenerator.Models;
+﻿using PdfGenerator.Core.Enums;
+using PdfGenerator.Core.Models;
 using QuestPDF.Fluent;
+using System;
 
-namespace PdfGenerator.Services;
+namespace PdfGenerator.Core.Services;
+
 public class FooterContentService : IPdfContentService<PdfFooterContent>
 {
   public ContentCreationStrategy GetContentCreationStrategy(PdfFooterContent pageContent, int width, int height) => pageContent switch
@@ -16,4 +18,3 @@ public class FooterContentService : IPdfContentService<PdfFooterContent>
     _ => throw new NotImplementedException(),
   };
 }
-

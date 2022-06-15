@@ -3,7 +3,7 @@ using PdfGenerator.Services;
 namespace PdfGenerator.Test.Services;
 public class FilenameServiceTests
 {
-  private FileNameService fileNameService;
+  private FileNameService? fileNameService;
 
   [SetUp]
   public void Setup()

@@ -1,11 +1,11 @@
 ﻿using Moq;
-using PdfGenerator.Models;
-using PdfGenerator.Services;
+using PdfGenerator.Core.Models;
+using PdfGenerator.Core.Services;
 
 namespace PdfGenerator.Test.Services;
 public class GeneratorServiceTests
 {
-  private GeneratorService generatorService;
+  private GeneratorService? generatorService;
 
   [SetUp]
   public void Setup()

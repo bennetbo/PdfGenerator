@@ -1,7 +1,5 @@
-﻿using Moq;
-using PdfGenerator.DTOs;
-using PdfGenerator.Services;
-using QuestPDF.Infrastructure;
+﻿using PdfGenerator.Core.Enums;
+using PdfGenerator.Core.Services;
 
 namespace PdfGenerator.Test.Services;
 public class PageContentServiceTests
@@ -9,7 +7,7 @@ public class PageContentServiceTests
   const int DUMMY_WIDTH = 400;
   const int DUMMY_HEIGHT = 400;
 
-  private PageContentService pageContentService;
+  private PageContentService? pageContentService;
 
   [SetUp]
   public void Setup()

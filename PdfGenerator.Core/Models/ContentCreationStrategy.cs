@@ -1,6 +1,6 @@
 ﻿using QuestPDF.Infrastructure;
 
-namespace PdfGenerator.Models;
+namespace PdfGenerator.Core.Models;
 
 public delegate void ContentCreationStrategy(IContainer container);
 
