@@ -7,7 +7,7 @@ public class PageContentServiceTests
   private const int DUMMY_WIDTH = 400;
   private const int DUMMY_HEIGHT = 400;
 
-  private PageContentService sut;
+  private PageContentService? sut;
 
   [SetUp]
   public void Setup()

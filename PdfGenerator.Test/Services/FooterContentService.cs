@@ -7,7 +7,7 @@ public class FooterContentServiceTests
   private const int DUMMY_WIDTH = 400;
   private const int DUMMY_HEIGHT = 400;
 
-  private FooterContentService sut;
+  private FooterContentService? sut;
 
   [SetUp]
   public void Setup()

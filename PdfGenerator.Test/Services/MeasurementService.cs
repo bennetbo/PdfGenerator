@@ -8,7 +8,7 @@ public class MeasurementServiceTest
   private const int VALID_PDF_MAX_SIZE = 14400;
   private const int VALID_PDF_MIN_SIZE = 300;
 
-  private MeasurementService sut;
+  private MeasurementService? sut;
 
   [SetUp]
   public void Setup()

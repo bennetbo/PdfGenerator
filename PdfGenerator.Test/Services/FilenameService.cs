@@ -3,7 +3,7 @@ using PdfGenerator.Services;
 namespace PdfGenerator.Test.Services;
 public class FilenameServiceTests
 {
-  private FileNameService sut;
+  private FileNameService? sut;
 
   [SetUp]
   public void Setup()
@@ -46,7 +46,6 @@ public class FilenameServiceTests
     Assert.That(() => sut.Replace(stringPlaceholders, 500, 500, 10), Throws.TypeOf<ArgumentException>()
       .With.Message.Contains("PAGE_UNKNOWN_VARIABLE"));
   }
-
 
   [Test]
   public void TestReplace_InputIsFilenameInvalidBracketCount_ThrowsException()
