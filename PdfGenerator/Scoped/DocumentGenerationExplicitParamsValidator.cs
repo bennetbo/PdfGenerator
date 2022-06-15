@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using PdfGenerator.DTOs;
-using PdfGenerator.Services;
 using PdfGenerator.Validators;
 
 namespace PdfGenerator.Scoped;

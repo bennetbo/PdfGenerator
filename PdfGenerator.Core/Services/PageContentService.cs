@@ -1,7 +1,7 @@
 ﻿using PdfGenerator.Core.Enums;
 using PdfGenerator.Core.Models;
-using QuestPDF.Helpers;
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using System;
 
 namespace PdfGenerator.Core.Services;

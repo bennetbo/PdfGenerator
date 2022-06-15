@@ -5,12 +5,12 @@ using PdfGenerator.Core.Services;
 namespace PdfGenerator.Test.Services;
 public class GeneratorServiceTests
 {
-  private GeneratorService? generatorService;
+  private GeneratorService? sut;
 
   [SetUp]
   public void Setup()
   {
-    generatorService = new GeneratorService();
+    sut = new GeneratorService();
   }
 
   [Test]
@@ -18,7 +18,7 @@ public class GeneratorServiceTests
   {
     var pageContentStrategyStub = new Mock<ContentCreationStrategy>();
     var footerContentStrategyStub = new Mock<ContentCreationStrategy>();
-    generatorService.Generate(400, 450, pageCount, pageContentStrategyStub.Object, footerContentStrategyStub.Object);
+    sut.Generate(400, 450, pageCount, pageContentStrategyStub.Object, footerContentStrategyStub.Object);
     Assert.Multiple(() =>
     {
       Assert.That(pageContentStrategyStub.Invocations, Has.Count.EqualTo(pageCount));
