@@ -47,7 +47,7 @@ app.MapGet("/generate/imaged/{pagesize}/{pages:int}", (string pagesize, int page
 
 app.MapGet("/generate/imaged/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IHttpHandlerService handlerService, IValidator<ExplicitGenerationParams> validator)
   => handlerService.GetResult(new(pages, width, height), pages, validator, PdfPageContent.Images))
-  .WithName("GenerateImagedByExplicitSize").ProducesValidationProblem().Produces(200); ;
+  .WithName("GenerateImagedByExplicitSize").ProducesValidationProblem().Produces(200);
 
 app.MapGet("/generate/imaged/cat/{pagesize}/{pages:int}", (string pagesize, int pages, IHttpHandlerService handlerService, IValidator<PageSizeGenerationParams> validator)
   => handlerService.GetResult(new(pages, pagesize), pages, validator, PdfPageContent.CatImages))
@@ -55,7 +55,7 @@ app.MapGet("/generate/imaged/cat/{pagesize}/{pages:int}", (string pagesize, int 
 
 app.MapGet("/generate/imaged/cat/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IHttpHandlerService handlerService, IValidator<ExplicitGenerationParams> validator)
   => handlerService.GetResult(new(pages, width, height), pages, validator, PdfPageContent.CatImages))
-  .WithName("GenerateCatImagedByExplicitSize").ProducesValidationProblem().Produces(200); ;
+  .WithName("GenerateCatImagedByExplicitSize").ProducesValidationProblem().Produces(200);
 
 app.MapGet("/generate/empty/{pagesize}/{pages:int}", (string pagesize, int pages, IHttpHandlerService handlerService, IValidator<PageSizeGenerationParams> validator)
   => handlerService.GetResult(new(pages, pagesize), pages, validator, PdfPageContent.Empty))
@@ -63,7 +63,7 @@ app.MapGet("/generate/empty/{pagesize}/{pages:int}", (string pagesize, int pages
 
 app.MapGet("/generate/empty/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IHttpHandlerService handlerService, IValidator<ExplicitGenerationParams> validator)
   => handlerService.GetResult(new(pages, width, height), pages, validator, PdfPageContent.Empty))
-  .WithName("EmptyByExplicitSize").ProducesValidationProblem().Produces(200); ;
+  .WithName("EmptyByExplicitSize").ProducesValidationProblem().Produces(200);
 
 
 app.Run();

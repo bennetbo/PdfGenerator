@@ -5,7 +5,7 @@ using QuestPDF.Helpers;
 
 namespace PdfGenerator.Services;
 
-interface IHttpHandlerService
+public interface IHttpHandlerService
 {
   IResult GetResult<ParamType>(ParamType generationParams,
     int pageCount,
@@ -14,7 +14,8 @@ interface IHttpHandlerService
     PdfFooterContent footerContent = PdfFooterContent.PageCount)
   where ParamType : IHasPageCount;
 }
-class HttpHandlerService : IHttpHandlerService
+
+public class HttpHandlerService : IHttpHandlerService
 {
   public const string CONTENT_TYPE_APPLICATION_PDF = "application/pdf";
 
@@ -41,7 +42,7 @@ class HttpHandlerService : IHttpHandlerService
     this.configurationService = configurationService;
   }
 
-  PageSize GetPageSize<ParamType>(ParamType parameters)
+  private PageSize GetPageSize<ParamType>(ParamType parameters)
     where ParamType : IHasPageCount
   {
     return parameters switch
@@ -51,7 +52,8 @@ class HttpHandlerService : IHttpHandlerService
       _ => throw new NotImplementedException($"{parameters.GetType().Name} not supported")
     };
   }
-  byte[] GetDocument(int width, int height, int index, PdfPageContent pageContent, PdfFooterContent footerContent)
+
+  private byte[] GetDocument(int width, int height, int index, PdfPageContent pageContent, PdfFooterContent footerContent)
   {
     var pageContentStrategy = pageContentService.GetContentCreationStrategy(pageContent, width, height);
     var footerContentStrategy = pageFooterService.GetContentCreationStrategy(footerContent, width, height);
@@ -59,7 +61,7 @@ class HttpHandlerService : IHttpHandlerService
     return documentGeneratorService.Generate(width, height, index, pageContentStrategy, footerContentStrategy);
   }
 
-  IResult GetResultImpl<ParamType>(ParamType generationParams, int pageCount, PdfPageContent pageContent = PdfPageContent.RandomSentences, PdfFooterContent footerContent = PdfFooterContent.PageCount)
+  private IResult GetResultImpl<ParamType>(ParamType generationParams, int pageCount, PdfPageContent pageContent = PdfPageContent.RandomSentences, PdfFooterContent footerContent = PdfFooterContent.PageCount)
     where ParamType : IHasPageCount
   {
     var size = GetPageSize(generationParams);
