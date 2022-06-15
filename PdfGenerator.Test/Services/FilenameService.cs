@@ -43,7 +43,7 @@ public class FilenameServiceTests
   {
     var stringPlaceholders = "test_{{PAGE_WIDTH}}_{{PAGE_HEIGHT}}_{{PAGE_COUNT}}_{{PAGE_UNKNOWN_VARIABLE}}.pdf";
 
-    Assert.That(() => sut.Replace(stringPlaceholders, 500, 500, 10), Throws.TypeOf<Exception>()
+    Assert.That(() => sut.Replace(stringPlaceholders, 500, 500, 10), Throws.TypeOf<ArgumentException>()
       .With.Message.Contains("PAGE_UNKNOWN_VARIABLE"));
   }
 
@@ -53,7 +53,7 @@ public class FilenameServiceTests
   {
     var stringPlaceholders = "test_{{PAGE_WIDTH}}_{{PAGE_HEIGHT}}}_{{PAGE_COUNT}}_{{PAGE_UNKNOWN_VARIABLE}}.pdf";
 
-    Assert.That(() => sut.Replace(stringPlaceholders, 500, 500, 10), Throws.TypeOf<Exception>()
+    Assert.That(() => sut.Replace(stringPlaceholders, 500, 500, 10), Throws.TypeOf<ArgumentException>()
       .With.Message.Contains("invalid bracket count"));
   }
 
