@@ -5,7 +5,7 @@ using PdfGenerator.Core.Services;
 namespace PdfGenerator.Test.Services;
 public class GeneratorServiceTests
 {
-  private GeneratorService generatorService;
+  private GeneratorService? generatorService;
 
   [SetUp]
   public void Setup()

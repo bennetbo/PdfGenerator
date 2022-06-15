@@ -4,7 +4,7 @@ using QuestPDF.Helpers;
 namespace PdfGenerator.Test.Services;
 public class MeasurementServiceTest
 {
-  MeasurementService measurementService;
+  MeasurementService? measurementService;
   const int VALID_PDF_MAX_SIZE = 14400;
   const int VALID_PDF_MIN_SIZE = 300;
 
