@@ -1,7 +1,10 @@
 using FluentValidation;
 using PdfGenerator.DTOs;
+using PdfGenerator.Helper;
 using PdfGenerator.Scoped;
 using PdfGenerator.Services;
+
+ResourceHelper.RegisterRequiredFonts();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +67,5 @@ app.MapGet("/generate/empty/{pagesize}/{pages:int}", (string pagesize, int pages
 app.MapGet("/generate/empty/{width:int}/{height:int}/{pages:int}", (int width, int height, int pages, IHttpHandlerService handlerService, IValidator<ExplicitGenerationParams> validator)
   => handlerService.GetResult(new(pages, width, height), pages, validator, PdfPageContent.Empty))
   .WithName("EmptyByExplicitSize").ProducesValidationProblem().Produces(200);
-
 
 app.Run();
