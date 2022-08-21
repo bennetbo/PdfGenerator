@@ -348,4 +348,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Project Rider
+*.iml
+.idea
+
+# Specific project files
 /PdfGenerator.Test/Coverage
