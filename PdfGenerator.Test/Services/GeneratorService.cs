@@ -1,9 +1,9 @@
 ﻿using Moq;
 using PdfGenerator.Core.Models;
 using PdfGenerator.Core.Services;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PdfGenerator.Test.Services;
+
 public class GeneratorServiceTests : TestBase<GeneratorService>
 {
   protected override GeneratorService DoSetup() => new();

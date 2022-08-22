@@ -2,6 +2,7 @@
 using PdfGenerator.Core.Services;
 
 namespace PdfGenerator.Test.Services;
+
 public class FooterContentServiceTests : TestBase<FooterContentService>
 {
   private const int DUMMY_WIDTH = 400;

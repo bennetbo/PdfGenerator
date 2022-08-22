@@ -1,6 +1,5 @@
 ﻿using PdfGenerator.Core.Services;
 using QuestPDF.Helpers;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PdfGenerator.Test.Services;
 

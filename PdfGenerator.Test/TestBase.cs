@@ -16,8 +16,10 @@ public abstract class TestBase<T>
   [TearDown]
   public void TearDown()
   {
+    DoTearDown();
     Sut = default;
   }
 
   protected abstract T DoSetup();
+  protected virtual void DoTearDown() { }
 }
