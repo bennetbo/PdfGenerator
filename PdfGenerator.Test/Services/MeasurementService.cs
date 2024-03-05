@@ -3,18 +3,12 @@ using QuestPDF.Helpers;
 
 namespace PdfGenerator.Test.Services;
 
-public class MeasurementServiceTest
+public class MeasurementServiceTest : TestBase<MeasurementService>
 {
   private const int VALID_PDF_MAX_SIZE = 14400;
   private const int VALID_PDF_MIN_SIZE = 300;
 
-  private MeasurementService? sut;
-
-  [SetUp]
-  public void Setup()
-  {
-    sut = new MeasurementService();
-  }
+  protected override MeasurementService DoSetup() => new();
 
   [Test]
   public void GetValidPageSize_InputIsValidPageSize_ReturnValidPagesizeAndNotUsingDefault()
@@ -24,8 +18,8 @@ public class MeasurementServiceTest
 
     foreach (var (pageSizeToTest, defaultSize) in validPageSizes.Zip(defaultPageSizesShifted))
     {
-      var testResult = sut.GetValidPageSize(pageSizeToTest, defaultSize);
-      var defaultResult = sut.GetValidPageSize(defaultSize);
+      var testResult = Sut.GetValidPageSize(pageSizeToTest, defaultSize);
+      var defaultResult = Sut.GetValidPageSize(defaultSize);
       Assert.Multiple(() =>
       {
         Assert.That(pageSizeToTest, Is.Not.EqualTo(defaultSize));
@@ -39,7 +33,7 @@ public class MeasurementServiceTest
   {
     var validPageSizes = typeof(PageSizes).GetProperties().Select(p => p.Name);
 
-    Assert.That(validPageSizes.All(sut.IsValidPageSize), Is.True);
+    Assert.That(validPageSizes.All(Sut.IsValidPageSize), Is.True);
   }
 
   [Test, Sequential]
@@ -49,7 +43,7 @@ public class MeasurementServiceTest
     Assert.Multiple(() =>
     {
       Assert.That(validPageSizes, Does.Not.Contain(pageSize));
-      Assert.That(sut.IsValidPageSize(pageSize), Is.False);
+      Assert.That(Sut.IsValidPageSize(pageSize), Is.False);
     });
   }
 
@@ -61,12 +55,12 @@ public class MeasurementServiceTest
   {
     var validPageSizes = typeof(PageSizes).GetProperties().Select(p => p.Name);
     var defaultPageSizesShifted = validPageSizes.Where((value, index) => index > 0).Concat(validPageSizes.Where((value, index) => index == 0));
-    var testResult = sut.GetValidPageSize(pageSize);
+    var testResult = Sut.GetValidPageSize(pageSize);
     Assert.Multiple(() =>
     {
-      Assert.That(sut.IsValidPageSize(pageSize), Is.False);
-      Assert.That(() => sut.GetValidPageSize(pageSize), Throws.Nothing);
-      Assert.That(testResult, Is.EqualTo(sut.GetValidPageSize("a4")));
+      Assert.That(Sut.IsValidPageSize(pageSize), Is.False);
+      Assert.That(() => Sut.GetValidPageSize(pageSize), Throws.Nothing);
+      Assert.That(testResult, Is.EqualTo(Sut.GetValidPageSize("a4")));
     });
   }
 
@@ -75,13 +69,13 @@ public class MeasurementServiceTest
     [Values("  ", "a100", "####", "AA1sdd")] string pageSize,
     [Values("  ", "a100", "####", "AA1sdd")] string defaultPageSize)
   {
-    var testResult = sut.GetValidPageSize("a4");
+    var testResult = Sut.GetValidPageSize("a4");
     Assert.Multiple(() =>
     {
-      Assert.That(sut.IsValidPageSize(pageSize), Is.False);
-      Assert.That(sut.IsValidPageSize(defaultPageSize), Is.False);
-      Assert.That(() => sut.GetValidPageSize(pageSize, defaultPageSize), Throws.Nothing);
-      Assert.That(testResult, Is.EqualTo(sut.GetValidPageSize("a4")));
+      Assert.That(Sut.IsValidPageSize(pageSize), Is.False);
+      Assert.That(Sut.IsValidPageSize(defaultPageSize), Is.False);
+      Assert.That(() => Sut.GetValidPageSize(pageSize, defaultPageSize), Throws.Nothing);
+      Assert.That(testResult, Is.EqualTo(Sut.GetValidPageSize("a4")));
     });
   }
 
@@ -92,9 +86,9 @@ public class MeasurementServiceTest
     [Range(VALID_PDF_MAX_SIZE + 1, VALID_PDF_MAX_SIZE + 11)] int upperInvalid)
     => Assert.Multiple(() =>
       {
-        Assert.That(sut.IsValidHeight(valid), Is.True);
-        Assert.That(sut.IsValidHeight(lowerInvalid), Is.False);
-        Assert.That(sut.IsValidHeight(upperInvalid), Is.False);
+        Assert.That(Sut.IsValidHeight(valid), Is.True);
+        Assert.That(Sut.IsValidHeight(lowerInvalid), Is.False);
+        Assert.That(Sut.IsValidHeight(upperInvalid), Is.False);
       });
 
   [Test, Combinatorial, Parallelizable]
@@ -104,9 +98,9 @@ public class MeasurementServiceTest
     [Range(VALID_PDF_MAX_SIZE + 1, VALID_PDF_MAX_SIZE + 11)] int upperInvalid)
     => Assert.Multiple(() =>
     {
-      Assert.That(sut.IsValidWidth(valid), Is.True);
-      Assert.That(sut.IsValidWidth(lowerInvalid), Is.False);
-      Assert.That(sut.IsValidWidth(upperInvalid), Is.False);
+      Assert.That(Sut.IsValidWidth(valid), Is.True);
+      Assert.That(Sut.IsValidWidth(lowerInvalid), Is.False);
+      Assert.That(Sut.IsValidWidth(upperInvalid), Is.False);
     });
 
   [Test, Sequential, Parallelizable]
@@ -115,8 +109,8 @@ public class MeasurementServiceTest
     [Values("  ", "fds", "786767a")] string invalidPageSize)
     => Assert.Multiple(() =>
     {
-      Assert.That(sut.IsValidPageSize(validPageSize), Is.True);
-      Assert.That(sut.IsValidPageSize(invalidPageSize), Is.False);
+      Assert.That(Sut.IsValidPageSize(validPageSize), Is.True);
+      Assert.That(Sut.IsValidPageSize(invalidPageSize), Is.False);
     });
 
   [Test, Combinatorial, Parallelizable]
@@ -125,10 +119,10 @@ public class MeasurementServiceTest
     [Range(VALID_PDF_MIN_SIZE - 11, VALID_PDF_MIN_SIZE - 1)] int invalid)
     => Assert.Multiple(() =>
     {
-      Assert.That(() => sut.GetPageSizeOrDefault(valid, valid), Throws.Nothing);
-      Assert.That(() => sut.GetPageSizeOrDefault(valid, invalid), Throws.Nothing);
-      Assert.That(() => sut.GetPageSizeOrDefault(invalid, valid), Throws.Nothing);
-      Assert.That(() => sut.GetPageSizeOrDefault(invalid, invalid), Throws.Nothing);
+      Assert.That(() => Sut.GetPageSizeOrDefault(valid, valid), Throws.Nothing);
+      Assert.That(() => Sut.GetPageSizeOrDefault(valid, invalid), Throws.Nothing);
+      Assert.That(() => Sut.GetPageSizeOrDefault(invalid, valid), Throws.Nothing);
+      Assert.That(() => Sut.GetPageSizeOrDefault(invalid, invalid), Throws.Nothing);
     });
 
 }
